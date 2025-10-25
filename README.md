@@ -1,4 +1,4 @@
-## Hi there 👋
+## Hallo Sodara I'm Widadur Rohman 👋
 
 <!--
 **Widd-Dev/Widd-Dev** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
@@ -14,3 +14,7 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+- 🔭 I’m currently working on
+- - 🌱 I’m currently learning  [Laravel ] (https://laravel.com)Framework
+ 😊😊😊
+ ![Anomali](https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMTk3NmNvY2NpN3pnbGxwcTVrZHF6MzRuenc2dXBzcnZraHJzbzZ5MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l49JLqDArrAoVy4wM/giphy.gif)
