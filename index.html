@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boutique Fashion Elite - Koleksi Fashion Eksklusif</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght @400;500;600;700&amp;family=Inter:wght @300;400;500;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+ </head>
+ <body class="h-full bg-gray-50"><!-- Navigation -->
+  <nav class="nav-blur fixed top-0 w-full z-50 transition-all duration-300">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+     <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center"><span class="text-white font-bold text-lg">B</span>
+      </div>
+      <h1 id="store-name" class="text-2xl font-display font-bold gradient-text">Boutique Fashion Elite</h1>
+     </div><!-- Desktop Menu -->
+     <div class="hidden md:flex items-center space-x-8"><button onclick="showPage('home')" class="nav-link text-gray-700 hover:text-pink-600 font-medium transition-colors duration-200">Beranda</button> <button onclick="showPage('products')" class="nav-link text-gray-700 hover:text-pink-600 font-medium transition-colors duration-200">Koleksi</button> <button onclick="showPage('about')" class="nav-link text-gray-700 hover:text-pink-600 font-medium transition-colors duration-200">Tentang</button> <button id="admin-toggle" onclick="toggleAdmin()" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 pulse-glow"> ✨ Admin </button>
+     </div><!-- Mobile Menu Button --> <button id="mobile-menu-btn" class="md:hidden text-gray-700 p-2">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg></button>
+    </div><!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-gray-200">
+     <div class="pt-4 space-y-2"><button onclick="showPage('home')" class="block w-full text-left py-3 text-gray-700 hover:text-pink-600 font-medium">Beranda</button> <button onclick="showPage('products')" class="block w-full text-left py-3 text-gray-700 hover:text-pink-600 font-medium">Koleksi</button> <button onclick="showPage('about')" class="block w-full text-left py-3 text-gray-700 hover:text-pink-600 font-medium">Tentang</button> <button onclick="toggleAdmin()" class="block w-full text-left py-3 text-pink-600 font-medium">✨ Admin Panel</button>
+     </div>
+    </div>
+   </div>
+  </nav><!-- Admin Login Modal -->
+  <div id="admin-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center backdrop-blur-sm">
+   <div class="bg-white rounded-2xl p-8 w-full max-w-md mx-4 shadow-2xl">
+    <div class="text-center mb-6">
+     <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+      <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+     </div>
+     <h3 class="text-2xl font-display font-bold text-gray-900">Admin Access</h3>
+     <p class="text-gray-600 mt-2">Masukkan password untuk mengakses panel admin</p>
+    </div>
+    <div id="admin-login" class="space-y-4">
+     <div class="relative"><input type="password" id="admin-password" placeholder="Password Admin" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-pink-500 focus:outline-none">
+      <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+       <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+       </svg>
+      </div>
+     </div>
+     <div class="flex space-x-3"><button onclick="adminLogin()" class="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white py-3 rounded-xl font-medium transition-all duration-200"> Masuk </button> <button onclick="closeAdminModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-medium transition-colors"> Batal </button>
+     </div>
+     <p class="text-xs text-gray-500 text-center">Password default: admin123</p>
+    </div>
+    <div id="admin-logout" class="hidden space-y-4">
+     <div class="text-center">
+      <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+       <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+       </svg>
+      </div>
+      <p class="text-green-600 font-medium">✓ Login Berhasil sebagai Admin</p>
+     </div><button onclick="adminLogout()" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl font-medium transition-colors"> Logout Admin </button>
+    </div>
+   </div>
+  </div><!-- Main Content -->
+  <main class="min-h-screen pt-20"><!-- HOME PAGE -->
+   <div id="home-page" class="page"><!-- Hero Section -->
+    <section class="hero-gradient text-white py-24 relative overflow-hidden">
+     <div class="absolute inset-0 bg-black opacity-20"></div>
+     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+       <div class="floating-animation mb-8">
+        <div class="inline-flex items-center space-x-2 glass-effect rounded-full px-6 py-3 mb-6"><span class="w-2 h-2 bg-pink-400 rounded-full animate-pulse"></span> <span class="text-sm font-medium">Koleksi Terbaru 2024</span>
+        </div>
+       </div>
+       <h2 id="store-tagline" class="text-5xl md:text-7xl font-display font-bold mb-6 leading-tight">Fashion, Digital<br><span class="text-pink-300">&amp; Layanan Terlengkap</span></h2>
+       <p class="text-xl md:text-2xl mb-12 opacity-90 max-w-3xl mx-auto leading-relaxed">Belanja fashion premium, beli aplikasi digital, top up game favorit, dan bayar tagihan PLN dengan mudah dan terpercaya</p><!-- Search Bar -->
+       <div class="max-w-lg mx-auto mb-12">
+        <div class="relative glass-effect rounded-2xl p-2"><input type="text" id="search-input" placeholder="Cari koleksi impian Anda..." class="w-full px-6 py-4 bg-transparent text-white placeholder-gray-300 focus:outline-none text-lg"> <button class="absolute right-2 top-2 bg-pink-500 hover:bg-pink-600 p-3 rounded-xl transition-colors">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg></button>
+        </div>
+       </div>
+       <div class="flex flex-col sm:flex-row gap-4 justify-center items-center"><button onclick="showPage('products')" class="bg-white text-gray-900 px-8 py-4 rounded-2xl font-semibold hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg"> 🛍️ Jelajahi Koleksi </button> <button onclick="contactWhatsApp()" class="glass-effect border-2 border-white text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white hover:text-gray-900 transition-all duration-200"> 💬 Konsultasi Gratis </button>
+       </div>
+      </div>
+     </div><!-- Decorative Elements -->
+     <div class="absolute top-20 left-10 w-20 h-20 bg-pink-400 rounded-full opacity-20 floating-animation"></div>
+     <div class="absolute bottom-20 right-10 w-32 h-32 bg-purple-400 rounded-full opacity-20 floating-animation" style="animation-delay: -2s;"></div>
+     <div class="absolute top-1/2 left-1/4 w-16 h-16 bg-yellow-400 rounded-full opacity-20 floating-animation" style="animation-delay: -4s;"></div>
+    </section><!-- Categories Section -->
+    <section class="py-20 bg-white relative">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+       <h3 class="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">Kategori Eksklusif</h3>
+       <p class="text-xl text-gray-600 max-w-2xl mx-auto">Pilihan terbaik dari berbagai kategori fashion premium untuk melengkapi gaya hidup Anda</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-6">
+       <div class="category-card group cursor-pointer" onclick="filterByCategory('Baju Pria')">
+        <div class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-3xl p-6 text-center group-hover:from-blue-200 group-hover:to-blue-300 transition-all duration-300">
+         <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+          👔
+         </div>
+         <p class="font-semibold text-gray-800 text-sm">Baju Pria</p>
+        </div>
+       </div>
+       <div class="category-card group cursor-pointer" onclick="filterByCategory('Baju Wanita')">
+        <div class="bg-gradient-to-br from-pink-100 to-pink-200 rounded-3xl p-6 text-center group-hover:from-pink-200 group-hover:to-pink-300 transition-all duration-300">
+         <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+          👗
+         </div>
+         <p class="font-semibold text-gray-800 text-sm">Baju Wanita</p>
+        </div>
+       </div>
+       <div class="category-card group cursor-pointer" onclick="filterByCategory('Jaket')">
+        <div class="bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl p-6 text-center group-hover:from-gray-200 group-hover:to-gray-300 transition-all duration-300">
+         <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+          🧥
+         </div>
+         <p class="font-semibold text-gray-800 text-sm">Jaket</p>
+        </div>
+       </div>
+       <div class="category-card group cursor-pointer" onclick="filterByCategory('Jam Tangan')">
+        <div class="bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-3xl p-6 text-center group-hover:from-yellow-200 group-hover:to-yellow-300 transition-all duration-300">
+         <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+          ⌚
+         </div>
+         <p class="font-semibold text-gray-800 text-sm">Jam Tangan</p>
+        </div>
+       </div>
+       <div class="category-card group cursor-pointer" onclick="filterByCategory('Sepatu')">
+        <div class="bg-gradient-to-br from-green-100 to-green-200 rounded-3xl p-6 text-center group-hover:from-green-200 group-hover:to-green-300 transition-all duration-300">
+         <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+          👟
+         </div>
+         <p class="font-semibold text-gray-800 text-sm">Sepatu</p>
+        </div>
+       </div>
+       <div class="category-card group cursor-pointer" onclick="filterByCategory('Kacamata')">
+        <div class="bg-gradient-to-br from-purple-100 to-purple-200 rounded-3xl p-6 text-center group-hover:from-purple-200 group-hover:to-purple-300 transition-all duration-300">
+         <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+          🕶️
+         </div>
+         <p class="font-semibold text-gray-800 text-sm">Kacamata</p>
+        </div>
+       </div>
+       <div class="category-card group cursor-pointer" onclick="filterByCategory('Dompet')">
+        <div class="bg-gradient-to-br from-red-100 to-red-200 rounded-3xl p-6 text-center group-hover:from-red-200 group-hover:to-red-300 transition-all duration-300">
+         <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+          👛
+         </div>
+         <p class="font-semibold text-gray-800 text-sm">Dompet</p>
+        </div>
+       </div>
+       <div class="category-card group cursor-pointer" onclick="filterByCategory('Tas')">
+        <div class="bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-3xl p-6 text-center group-hover:from-indigo-200 group-hover:to-indigo-300 transition-all duration-300">
+         <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+          👜
+         </div>
+         <p class="font-semibold text-gray-800 text-sm">Tas</p>
+        </div>
+       </div>
+      </div><!-- Digital Services Section -->
+      <div class="mt-16">
+       <div class="text-center mb-12">
+        <h3 class="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-4">Layanan Digital</h3>
+        <p class="text-lg text-gray-600">Aplikasi premium, top up game, dan pembayaran tagihan</p>
+       </div>
+       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="category-card group cursor-pointer" onclick="filterByCategory('Aplikasi Premium')">
+         <div class="bg-gradient-to-br from-blue-100 to-cyan-200 rounded-3xl p-8 text-center group-hover:from-blue-200 group-hover:to-cyan-300 transition-all duration-300">
+          <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
+           📱
+          </div>
+          <p class="font-semibold text-gray-800 text-lg">Aplikasi Premium</p>
+          <p class="text-gray-600 text-sm mt-2">Netflix, Spotify, YouTube Premium</p>
+         </div>
+        </div>
+        <div class="category-card group cursor-pointer" onclick="filterByCategory('Top Up Game')">
+         <div class="bg-gradient-to-br from-green-100 to-emerald-200 rounded-3xl p-8 text-center group-hover:from-green-200 group-hover:to-emerald-300 transition-all duration-300">
+          <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
+           🎮
+          </div>
+          <p class="font-semibold text-gray-800 text-lg">Top Up Game</p>
+          <p class="text-gray-600 text-sm mt-2">Mobile Legends, PUBG, Free Fire</p>
+         </div>
+        </div>
+        <div class="category-card group cursor-pointer" onclick="filterByCategory('Bayar PLN')">
+         <div class="bg-gradient-to-br from-yellow-100 to-orange-200 rounded-3xl p-8 text-center group-hover:from-yellow-200 group-hover:to-orange-300 transition-all duration-300">
+          <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
+           ⚡
+          </div>
+          <p class="font-semibold text-gray-800 text-lg">Bayar PLN</p>
+          <p class="text-gray-600 text-sm mt-2">Token listrik &amp; tagihan bulanan</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- Featured Products -->
+    <section class="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+       <h3 class="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">Koleksi Unggulan</h3>
+       <p class="text-xl text-gray-600 max-w-2xl mx-auto">Produk pilihan terbaik yang paling diminati pelanggan kami</p>
+      </div>
+      <div id="featured-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12"><!-- Featured products will be displayed here -->
+      </div>
+      <div class="text-center"><button onclick="showPage('products')" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-10 py-4 rounded-2xl font-semibold text-lg transition-all duration-200 transform hover:scale-105 shadow-lg"> 🌟 Lihat Semua Koleksi </button>
+      </div>
+     </div>
+    </section><!-- Stats Section -->
+    <section class="py-20 bg-white">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+       <div class="text-center">
+        <div class="text-4xl md:text-5xl font-bold gradient-text mb-2">
+         1000+
+        </div>
+        <p class="text-gray-600 font-medium">Pelanggan Puas</p>
+       </div>
+       <div class="text-center">
+        <div class="text-4xl md:text-5xl font-bold gradient-text mb-2">
+         500+
+        </div>
+        <p class="text-gray-600 font-medium">Produk Premium</p>
+       </div>
+       <div class="text-center">
+        <div class="text-4xl md:text-5xl font-bold gradient-text mb-2">
+         50+
+        </div>
+        <p class="text-gray-600 font-medium">Brand Eksklusif</p>
+       </div>
+       <div class="text-center">
+        <div class="text-4xl md:text-5xl font-bold gradient-text mb-2">
+         24/7
+        </div>
+        <p class="text-gray-600 font-medium">Customer Service</p>
+       </div>
+      </div>
+     </div>
+    </section>
+   </div><!-- PRODUCTS PAGE -->
+   <div id="products-page" class="page hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"><!-- Page Header -->
+     <div class="text-center mb-12">
+      <h2 class="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">Koleksi Premium Kami</h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">Jelajahi berbagai pilihan fashion berkualitas tinggi yang telah dipilih khusus untuk Anda</p>
+     </div><!-- Search and Filter -->
+     <div class="bg-white rounded-3xl shadow-lg p-6 mb-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+       <div class="md:col-span-2">
+        <div class="relative"><input type="text" id="product-search" placeholder="Cari produk impian Anda..." class="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl focus:border-pink-500 focus:outline-none text-lg">
+         <div class="absolute inset-y-0 right-0 pr-4 flex items-center">
+          <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+         </div>
+        </div>
+       </div><select id="category-filter" class="px-6 py-4 border-2 border-gray-200 rounded-2xl focus:border-pink-500 focus:outline-none text-lg"> <option value="">🏷️ Semua Kategori</option> <option value="Baju Pria">👔 Baju Pria</option> <option value="Baju Wanita">👗 Baju Wanita</option> <option value="Jaket">🧥 Jaket</option> <option value="Jam Tangan">⌚ Jam Tangan</option> <option value="Sepatu">👟 Sepatu</option> <option value="Kacamata">🕶️ Kacamata</option> <option value="Dompet">👛 Dompet</option> <option value="Tas">👜 Tas</option> <option value="Aplikasi Premium">📱 Aplikasi Premium</option> <option value="Top Up Game">🎮 Top Up Game</option> <option value="Bayar PLN">⚡ Bayar PLN</option> </select> <select id="stock-filter" class="px-6 py-4 border-2 border-gray-200 rounded-2xl focus:border-pink-500 focus:outline-none text-lg"> <option value="">📦 Semua Stok</option> <option value="Tersedia">✅ Tersedia</option> <option value="Habis">❌ Habis</option> </select>
+      </div>
+     </div><!-- Products Grid -->
+     <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-12"><!-- Products will be displayed here -->
+     </div><!-- Empty State -->
+     <div id="products-empty" class="text-center py-20 hidden">
+      <div class="text-8xl mb-6">
+       🛍️
+      </div>
+      <h3 class="text-2xl font-display font-bold text-gray-900 mb-4">Koleksi Segera Hadir</h3>
+      <p class="text-gray-600 text-lg max-w-md mx-auto">Produk eksklusif kami akan segera ditampilkan di sini. Pantau terus untuk update terbaru!</p>
+     </div>
+    </div>
+   </div><!-- ABOUT PAGE -->
+   <div id="about-page" class="page hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16"><!-- Header -->
+     <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">Tentang Boutique Elite</h2>
+      <div class="w-32 h-1 bg-gradient-to-r from-pink-500 to-purple-600 mx-auto rounded-full"></div>
+     </div><!-- Main Content -->
+     <div class="bg-white rounded-3xl shadow-xl overflow-hidden mb-12">
+      <div class="grid md:grid-cols-2 gap-0">
+       <div class="p-12">
+        <h3 class="text-2xl font-display font-bold text-gray-900 mb-6">Cerita Kami</h3>
+        <p id="about-description" class="text-gray-700 text-lg leading-relaxed mb-8">Boutique eksklusif dengan koleksi fashion premium yang menghadirkan gaya terdepan untuk Anda yang menghargai kualitas dan keeleganan. Kami berkomitmen memberikan pengalaman berbelanja yang tak terlupakan dengan produk-produk pilihan terbaik.</p>
+        <div class="space-y-4">
+         <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center">
+           <svg class="w-4 h-4 text-pink-600" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+           </svg>
+          </div><span class="text-gray-700 font-medium">Kualitas Premium Terjamin</span>
+         </div>
+         <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center">
+           <svg class="w-4 h-4 text-pink-600" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+           </svg>
+          </div><span class="text-gray-700 font-medium">Koleksi Eksklusif &amp; Terbatas</span>
+         </div>
+         <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center">
+           <svg class="w-4 h-4 text-pink-600" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+           </svg>
+          </div><span class="text-gray-700 font-medium">Pelayanan Personal &amp; Profesional</span>
+         </div>
+        </div>
+       </div>
+       <div class="bg-gradient-to-br from-pink-500 to-purple-600 p-12 text-white">
+        <h3 class="text-2xl font-display font-bold mb-6">Visi &amp; Misi</h3>
+        <div class="space-y-8">
+         <div>
+          <h4 class="text-xl font-semibold mb-3">🎯 Visi Kami</h4>
+          <p class="opacity-90 leading-relaxed">Menjadi boutique fashion terdepan yang menghadirkan gaya hidup eksklusif dan berkelas untuk setiap individu yang menghargai keindahan dan kualitas.</p>
+         </div>
+         <div>
+          <h4 class="text-xl font-semibold mb-3">🚀 Misi Kami</h4>
+          <p class="opacity-90 leading-relaxed">Menyediakan koleksi fashion premium dengan standar kualitas internasional, memberikan pengalaman berbelanja yang personal, dan membantu setiap pelanggan menemukan gaya yang sempurna.</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Services -->
+     <div class="grid md:grid-cols-3 gap-8 mb-12">
+      <div class="bg-white rounded-2xl p-8 shadow-lg text-center">
+       <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6"><span class="text-2xl">📱</span>
+       </div>
+       <h4 class="text-xl font-bold text-gray-900 mb-4">Konsultasi WhatsApp</h4>
+       <p class="text-gray-600 mb-4">Dapatkan saran fashion personal langsung dari stylist profesional kami</p>
+       <div class="text-sm text-gray-500">
+        Respon cepat &amp; ramah
+       </div>
+      </div>
+      <div class="bg-white rounded-2xl p-8 shadow-lg text-center">
+       <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6"><span class="text-2xl">💳</span>
+       </div>
+       <h4 class="text-xl font-bold text-gray-900 mb-4">Pembayaran Mudah</h4>
+       <p class="text-gray-600 mb-4">Transfer bank dengan konfirmasi otomatis untuk kemudahan transaksi</p>
+       <div class="text-sm text-gray-500">
+        BCA • Mandiri • BRI • BNI
+       </div>
+      </div>
+      <div class="bg-white rounded-2xl p-8 shadow-lg text-center">
+       <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6"><span class="text-2xl">🚚</span>
+       </div>
+       <h4 class="text-xl font-bold text-gray-900 mb-4">Pengiriman Aman</h4>
+       <p class="text-gray-600 mb-4">Pengiriman ke seluruh Indonesia dengan packaging premium dan asuransi</p>
+       <div class="text-sm text-gray-500">
+        JNE • J&amp;T • SiCepat
+       </div>
+      </div>
+     </div><!-- Contact CTA -->
+     <div class="bg-gradient-to-r from-pink-500 to-purple-600 rounded-3xl p-12 text-white text-center">
+      <h3 class="text-3xl font-display font-bold mb-6">Siap Menemukan Gaya Sempurna Anda?</h3>
+      <p class="text-xl opacity-90 mb-8 max-w-2xl mx-auto">Hubungi tim fashion consultant kami untuk mendapatkan rekomendasi personal dan penawaran eksklusif</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"><a id="whatsapp-link" href="#" target="_blank" rel="noopener noreferrer" class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-200 transform hover:scale-105 flex items-center space-x-3">
+        <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+        </svg><span>Konsultasi via WhatsApp</span> </a>
+      </div>
+      <div class="flex justify-center space-x-6"><a id="instagram-link" href="#" target="_blank" rel="noopener noreferrer" class="bg-white bg-opacity-20 hover:bg-opacity-30 p-4 rounded-2xl transition-all duration-200 transform hover:scale-110">
+        <svg class="w-8 h-8" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+        </svg></a> <a id="facebook-link" href="#" target="_blank" rel="noopener noreferrer" class="bg-white bg-opacity-20 hover:bg-opacity-30 p-4 rounded-2xl transition-all duration-200 transform hover:scale-110">
+        <svg class="w-8 h-8" fill="currentColor" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+        </svg></a> <a id="twitter-link" href="#" target="_blank" rel="noopener noreferrer" class="bg-white bg-opacity-20 hover:bg-opacity-30 p-4 rounded-2xl transition-all duration-200 transform hover:scale-110">
+        <svg class="w-8 h-8" fill="currentColor" viewbox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+        </svg></a>
+      </div>
+     </div>
+    </div>
+   </div><!-- ADMIN PANEL -->
+   <div id="admin-panel" class="hidden bg-gradient-to-br from-gray-50 to-gray-100 border-t-4 border-pink-500 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+     <div class="text-center mb-12">
+      <div class="inline-flex items-center space-x-3 bg-white rounded-2xl px-6 py-3 shadow-lg mb-4">
+       <div class="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center">
+        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
+        </svg>
+       </div><span class="font-semibold text-gray-700">Admin Panel</span>
+      </div>
+      <h3 class="text-3xl font-display font-bold text-gray-900">Kelola Koleksi Fashion</h3>
+      <p class="text-gray-600 mt-2">Tambah dan kelola produk fashion eksklusif Anda</p>
+     </div><!-- Add Product Form -->
+     <div class="bg-white rounded-3xl shadow-xl p-8 mb-12">
+      <div class="flex items-center space-x-3 mb-8">
+       <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-500 rounded-2xl flex items-center justify-center">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+       </div>
+       <h4 class="text-2xl font-display font-bold text-gray-900">Tambah Produk Baru</h4>
+      </div>
+      <form id="product-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+       <div class="space-y-2"><label for="product-name" class="block text-sm font-semibold text-gray-700">Nama Produk *</label> <input type="text" id="product-name" required class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-pink-500 focus:outline-none transition-colors">
+       </div>
+       <div class="space-y-2"><label for="product-price" class="block text-sm font-semibold text-gray-700">Harga (Rp) *</label> <input type="number" id="product-price" required min="0" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-pink-500 focus:outline-none transition-colors">
+       </div>
+       <div class="space-y-2"><label for="product-category" class="block text-sm font-semibold text-gray-700">Kategori *</label> <select id="product-category" required class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-pink-500 focus:outline-none transition-colors"> <option value="">Pilih Kategori</option> <option value="Baju Pria">👔 Baju Pria</option> <option value="Baju Wanita">👗 Baju Wanita</option> <option value="Jaket">🧥 Jaket</option> <option value="Jam Tangan">⌚ Jam Tangan</option> <option value="Sepatu">👟 Sepatu</option> <option value="Kacamata">🕶️ Kacamata</option> <option value="Dompet">👛 Dompet</option> <option value="Tas">👜 Tas</option> </select>
+       </div>
+       <div class="space-y-2"><label for="product-stock" class="block text-sm font-semibold text-gray-700">Status Stok *</label> <select id="product-stock" required class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-pink-500 focus:outline-none transition-colors"> <option value="Tersedia">✅ Tersedia</option> <option value="Habis">❌ Habis</option> </select>
+       </div>
+       <div class="space-y-2"><label for="product-sizes" class="block text-sm font-semibold text-gray-700">Ukuran</label> <input type="text" id="product-sizes" placeholder="S, M, L, XL" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-pink-500 focus:outline-none transition-colors">
+       </div>
+       <div class="space-y-2"><label for="product-material" class="block text-sm font-semibold text-gray-700">Bahan</label> <input type="text" id="product-material" placeholder="Cotton, Polyester, Silk" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-pink-500 focus:outline-none transition-colors">
+       </div>
+       <div class="md:col-span-2 lg:col-span-3 space-y-2"><label for="product-description" class="block text-sm font-semibold text-gray-700">Deskripsi Detail *</label> <textarea id="product-description" required rows="4" placeholder="Jelaskan detail produk, kualitas bahan, cara perawatan, dan keunggulan produk..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-pink-500 focus:outline-none transition-colors"></textarea>
+       </div>
+       <div class="md:col-span-2 lg:col-span-3 space-y-2"><label for="product-image" class="block text-sm font-semibold text-gray-700">URL Foto Produk</label> <input type="url" id="product-image" placeholder="https://example.com/image.jpg" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-pink-500 focus:outline-none transition-colors">
+       </div>
+       <div class="md:col-span-2 lg:col-span-3"><button type="submit" id="add-product-btn" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-200 transform hover:scale-105 shadow-lg"> ✨ Tambah ke Koleksi </button>
+       </div>
+      </form>
+     </div><!-- Products Management -->
+     <div class="bg-white rounded-3xl shadow-xl p-8">
+      <div class="flex justify-between items-center mb-8">
+       <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
+         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+         </svg>
+        </div>
+        <h4 class="text-2xl font-display font-bold text-gray-900">Kelola Koleksi</h4>
+       </div>
+       <div id="admin-product-count" class="bg-gradient-to-r from-pink-100 to-purple-100 text-pink-700 px-6 py-2 rounded-full font-semibold">
+        0 produk
+       </div>
+      </div>
+      <div id="admin-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Admin products will be displayed here -->
+      </div>
+     </div>
+    </div>
+   </div>
+  </main><!-- Footer -->
+  <footer class="bg-gray-900 text-white py-16 relative overflow-hidden">
+   <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-purple-900 to-pink-900 opacity-50"></div>
+   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+     <div class="md:col-span-2">
+      <div class="flex items-center space-x-3 mb-6">
+       <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center"><span class="text-white font-bold text-xl">B</span>
+       </div>
+       <h3 id="footer-store-name" class="text-2xl font-display font-bold">Boutique Fashion Elite</h3>
+      </div>
+      <p class="text-gray-300 text-lg leading-relaxed mb-6">Boutique eksklusif yang menghadirkan koleksi fashion premium dengan standar kualitas internasional. Temukan gaya sempurna Anda bersama kami.</p>
+      <div class="flex space-x-4"><a id="footer-instagram" href="#" target="_blank" rel="noopener noreferrer" class="bg-white bg-opacity-10 hover:bg-opacity-20 p-3 rounded-xl transition-all duration-200 transform hover:scale-110">
+        <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+        </svg></a> <a id="footer-facebook" href="#" target="_blank" rel="noopener noreferrer" class="bg-white bg-opacity-10 hover:bg-opacity-20 p-3 rounded-xl transition-all duration-200 transform hover:scale-110">
+        <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+        </svg></a> <a id="footer-twitter" href="#" target="_blank" rel="noopener noreferrer" class="bg-white bg-opacity-10 hover:bg-opacity-20 p-3 rounded-xl transition-all duration-200 transform hover:scale-110">
+        <svg class="w-8 h-8" fill="currentColor" viewbox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+        </svg></a>
+      </div>
+     </div>
+     <div>
+      <h4 class="text-xl font-display font-bold mb-6">Navigasi</h4>
+      <ul class="space-y-4 text-gray-300">
+       <li><button onclick="showPage('home')" class="hover:text-white transition-colors flex items-center space-x-2"> <span>🏠</span><span>Beranda</span> </button></li>
+       <li><button onclick="showPage('products')" class="hover:text-white transition-colors flex items-center space-x-2"> <span>👗</span><span>Koleksi</span> </button></li>
+       <li><button onclick="showPage('about')" class="hover:text-white transition-colors flex items-center space-x-2"> <span>ℹ️</span><span>Tentang Kami</span> </button></li>
+      </ul>
+     </div>
+     <div>
+      <h4 class="text-xl font-display font-bold mb-6">Layanan</h4>
+      <ul class="space-y-4 text-gray-300">
+       <li class="flex items-center space-x-2"><span>📱</span><span>Konsultasi Fashion</span></li>
+       <li class="flex items-center space-x-2"><span>💳</span><span>Pembayaran Mudah</span></li>
+       <li class="flex items-center space-x-2"><span>💎</span><span>Produk Premium</span></li>
+       <li class="flex items-center space-x-2"><span>🔒</span><span>Pembayaran Aman</span></li>
+      </ul>
+     </div>
+    </div>
+    <div class="border-t border-gray-700 mt-12 pt-8 text-center">
+     <p class="text-gray-400 text-lg">© 2024 <span class="font-display font-semibold">Boutique Fashion Elite</span>. Semua hak dilindungi. Dibuat dengan ❤️ untuk fashion lovers.</p>
+    </div>
+   </div>
+  </footer>
+  <script src="script.js"></script>
+ </body>
+</html>
